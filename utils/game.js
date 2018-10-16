@@ -1,6 +1,8 @@
-var schedule = require('node-schedule');
+module.exports = {
+    generateChallenge() {
+        // game logic for generating challenges goes here
+        return { name: 'Test', postion: [0, 1] }
+    }
+}
 
-var j = schedule.scheduleJob('*/10 * * * * *', function () {
-    console.log('Scheduling Test!');
-});
 
