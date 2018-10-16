@@ -74,13 +74,14 @@ module.exports = {
 
                         Team.findById(e)
                             .then(foundTeam => {
+
                                 let currentTeam = {}
                                 currentTeam.challenge1 = game.generateChallenge();
                                 currentTeam.challenge2 = game.generateChallenge();
                                 currentTeam.challenge3 = game.generateChallenge();
                                 currentTeam.challenge = [false, false, false]
 
-                                Team.findByIdAndUpdate(foundTeam._id, currentTeam)
+                                Team.findOneAndUpdate(foundTeam._id, currentTeam)
                                     .then(team => {
                                         resolve(team)
                                     })
@@ -93,13 +94,9 @@ module.exports = {
                                 reject(err);
                             })
                         })
-                // .catch(err => {
-                //     reject(err);
-                // })
-
-     });
-    })
-},
+                });
+        })
+    },
     updateTeam: (body) => {
 
         return new Promise((resolve, reject) => {
@@ -107,7 +104,7 @@ module.exports = {
                 .then(foundTeam => {
                 
                     let currentTeam = body
-                    Team.findByIdAndUpdate(body.id, currentTeam)
+                    Team.findOneAndUpdate(body.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })
@@ -134,7 +131,7 @@ module.exports = {
                     currentUsers.push(params.user)
                     currentTeam.users = currentUsers
 
-                    Team.findByIdAndUpdate(params.id, currentTeam)
+                    Team.findOneAndUpdate(params.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })
@@ -162,7 +159,7 @@ module.exports = {
                     currentUsers.splice(indx)
                     currentTeam.users = currentUsers
 
-                    Team.findByIdAndUpdate(params.id, currentTeam)
+                    Team.findOneAndUpdate(params.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })
