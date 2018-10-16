@@ -63,7 +63,7 @@ module.exports = {
                 });
         });
     },
-    updateChallenges: (id) => {
+    resetChallenges: (id) => {
 
         return new Promise((resolve, reject) => {
             Team.findById(id)
@@ -74,6 +74,29 @@ module.exports = {
                     currentTeam.challenge3 = game.generateChallenge();
                     currentTeam.challenge - [false, false, false]
                     Team.findByIdAndUpdate(id, currentTeam)
+                        .then(team => {
+                            resolve(team)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            reject(id)
+                        })
+
+                })
+                .catch(err => {
+                    reject(err);
+                })
+
+        })
+    },
+    updateTeam: body => {
+
+        return new Promise((resolve, reject) => {
+            Team.findById(body.id)
+                .then(foundTeam => {
+                
+                    let currentTeam = body
+                    Team.findByIdAndUpdate(body.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })

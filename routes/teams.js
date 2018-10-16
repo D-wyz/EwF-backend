@@ -45,10 +45,29 @@ router.post('/createteam', function (req, res, next) {
 
 });
 
-router.put('/updateChallenges', function (req, res, next) {
+router.put('/resetChallenges', function (req, res, next) {
 
     teamController
-        .updateChallenges(req.body.id)
+        .resetChallenges(req.body.id)
+        .then(team => {
+            res.json({
+                confirmation: 'success',
+                team
+            })
+        })
+        .catch(err => {
+            res.json({
+                confirmation: 'failure',
+                err
+            })
+        })
+
+});
+
+router.put('/updateTeam', function (req, res, next) {
+
+    teamController
+        .updateTeam(req.body)
         .then(team => {
             res.json({
                 confirmation: 'success',
