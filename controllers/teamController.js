@@ -6,10 +6,9 @@ const jwt = require('jsonwebtoken');
 module.exports = {
 
     findTeams: (req, res, next) => {
+
         Team.find({})
             .then(teams => {
-
-                
                 let success = {}
                 success.confirmation = true;
                 success.payload = teams;
@@ -22,7 +21,6 @@ module.exports = {
 
     },
     findTeam: (params) => {
-        console.log(params);
         
         return new Promise((resolve, reject) => {
             Team.findById(params.id)
@@ -35,17 +33,6 @@ module.exports = {
         });
     },
 
-    // findTeam: (params) => {
-    //     return new Promise((resolve, reject) => {
-    //         Team.findById(params)
-    //             .then(teams => {   
-    //                 resolve(teams);
-    //             })
-    //             .catch(err => {
-    //                 reject(err);
-    //             })
-    //     });
-    // },
     create: (params) => {
 
         return new Promise((resolve, reject) => {
@@ -77,6 +64,7 @@ module.exports = {
         });
     },
     updateChallenges: (id) => {
+
         return new Promise((resolve, reject) => {
             Team.findById(id)
                 .then(foundTeam => {
@@ -102,6 +90,7 @@ module.exports = {
         })
     },
     addUser: (params) => {
+
         return new Promise((resolve, reject) => {
             Team.findById(params.id)
                 .then(foundTeam => {
@@ -128,6 +117,7 @@ module.exports = {
         })
     },
     removeUser: (params) => {
+
         return new Promise((resolve, reject) => {
             Team.findById(params.id)
                 .then(foundTeam => {

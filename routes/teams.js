@@ -5,29 +5,8 @@ var passport = require('passport');
 
 router.get('/getallteams', teamController.findTeams);
 
-// router.post('/getteam', function (req, res, next) {
-//     console.log(req);
-    
-//     teamController
-//         .findTeam(req.body.id)
-//         .then(team => {
-//             res.json({  
-//                 confirmation: 'success',
-//                 payload: team
-//             })
-//         })
-//         .catch(err => {
-//             res.json({
-//                 confirmation: 'failure',
-//                 payload: err
-//             })
-//         })
-
-// });
-
-
 router.get('/getteam', function (req, res, next) {
-    console.log(req);
+
     teamController
         .findTeam(req.query)
         .then(team => {
