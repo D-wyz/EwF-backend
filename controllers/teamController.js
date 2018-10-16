@@ -63,33 +63,44 @@ module.exports = {
                 });
         });
     },
-    resetChallenges: (id) => {
+    resetChallenges: () => {
 
         return new Promise((resolve, reject) => {
-            Team.findById(id)
-                .then(foundTeam => {
-                    let currentTeam = {}
-                    currentTeam.challenge1 = game.generateChallenge();
-                    currentTeam.challenge2 = game.generateChallenge();
-                    currentTeam.challenge3 = game.generateChallenge();
-                    currentTeam.challenge - [false, false, false]
-                    Team.findByIdAndUpdate(id, currentTeam)
-                        .then(team => {
-                            resolve(team)
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            reject(id)
-                        })
 
-                })
-                .catch(err => {
-                    reject(err);
-                })
+            Team.find({})
+                .then(teams => {
+                        let ids = teams.map(e => e._id);
+                        ids.forEach((e) => {
 
-        })
-    },
-    updateTeam: body => {
+                        Team.findById(e)
+                            .then(foundTeam => {
+                                let currentTeam = {}
+                                currentTeam.challenge1 = game.generateChallenge();
+                                currentTeam.challenge2 = game.generateChallenge();
+                                currentTeam.challenge3 = game.generateChallenge();
+                                currentTeam.challenge = [false, false, false]
+
+                                Team.findByIdAndUpdate(foundTeam._id, currentTeam)
+                                    .then(team => {
+                                        resolve(team)
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+                                        reject(id)
+                                    })
+                            })
+                            .catch(err => {
+                                reject(err);
+                            })
+                        })
+                // .catch(err => {
+                //     reject(err);
+                // })
+
+     });
+    })
+},
+    updateTeam: (body) => {
 
         return new Promise((resolve, reject) => {
             Team.findById(body.id)
