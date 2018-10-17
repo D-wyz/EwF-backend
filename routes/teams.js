@@ -64,6 +64,25 @@ router.put('/resetChallenges', function (req, res, next) {
 
 });
 
+router.put('/resetAllChallenges', function (req, res, next) {
+
+    teamController
+        .resetAllChallenges()
+        .then(team => {
+            res.json({
+                confirmation: 'success',
+                team
+            })
+        })
+        .catch(err => {
+            res.json({
+                confirmation: 'failure',
+                err
+            })
+        })
+
+});
+
 router.put('/updateTeam', function (req, res, next) {
 
     teamController

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 module.exports = {
 
     findTeams: (req, res, next) => {
-
+        
         Team.find({})
             .then(teams => {
                 let success = {}
@@ -38,12 +38,14 @@ module.exports = {
         return new Promise((resolve, reject) => {
             Team.create(params)
                 .then(team => {
-
+                    console.log(team);
+                    
                     const payload = {
                         teamName: team.teamName,
-                        id: team._id
+                        id: team._id,
                     }
-
+                    console.log(payload);
+                    
                     jwt.sign(payload, process.env.SECRET_KEY, {
                         expiresIn: 3600
                     }, (err, token) => {
@@ -63,14 +65,44 @@ module.exports = {
                 });
         });
     },
-    resetChallenges: () => {
+    resetChallenges: (id) => {
+
+        return new Promise((resolve, reject) => {
+console.log(id);
+
+            Team.findById(id)
+                .then(foundTeam => {
+
+                    let currentTeam = {}
+                    currentTeam.challenge1 = game.generateChallenge();
+                    currentTeam.challenge2 = game.generateChallenge();
+                    currentTeam.challenge3 = game.generateChallenge();
+                    currentTeam.challenge = [false, false, false]
+console.log(currentTeam);
+
+                    Team.findByIdAndUpdate(foundTeam._id, currentTeam)
+                        .then(team => {
+                            resolve(team)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            reject(id)
+                        })
+                })
+                .catch(err => {
+                    reject(err);
+                })
+            
+        });
+    },
+    resetAllChallenges: () => {
 
         return new Promise((resolve, reject) => {
 
             Team.find({})
                 .then(teams => {
-                        let ids = teams.map(e => e._id);
-                        ids.forEach((e) => {
+                    let ids = teams.map(e => e._id);
+                    ids.forEach((e) => {
 
                         Team.findById(e)
                             .then(foundTeam => {
@@ -81,7 +113,7 @@ module.exports = {
                                 currentTeam.challenge3 = game.generateChallenge();
                                 currentTeam.challenge = [false, false, false]
 
-                                Team.findOneAndUpdate(foundTeam._id, currentTeam)
+                                Team.findByIdAndUpdate(foundTeam._id, currentTeam)
                                     .then(team => {
                                         resolve(team)
                                     })
@@ -93,7 +125,7 @@ module.exports = {
                             .catch(err => {
                                 reject(err);
                             })
-                        })
+                    })
                 });
         })
     },
@@ -104,7 +136,7 @@ module.exports = {
                 .then(foundTeam => {
                 
                     let currentTeam = body
-                    Team.findOneAndUpdate(body.id, currentTeam)
+                    Team.findByIdAndUpdate(body.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })
@@ -131,7 +163,7 @@ module.exports = {
                     currentUsers.push(params.user)
                     currentTeam.users = currentUsers
 
-                    Team.findOneAndUpdate(params.id, currentTeam)
+                    Team.findByIdAndUpdate(params.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })
@@ -159,7 +191,7 @@ module.exports = {
                     currentUsers.splice(indx)
                     currentTeam.users = currentUsers
 
-                    Team.findOneAndUpdate(params.id, currentTeam)
+                    Team.findByIdAndUpdate(params.id, currentTeam)
                         .then(team => {
                             resolve(team)
                         })
