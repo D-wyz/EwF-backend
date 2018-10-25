@@ -1,3 +1,4 @@
+var User = require('../models/User');
 var Team = require('../models/Team');
 var game = require('../utils/game');
 const jwt = require('jsonwebtoken');
@@ -8,6 +9,7 @@ module.exports = {
     findTeams: (req, res, next) => {
         
         Team.find({})
+            .populate('users')
             .then(teams => {
                 let success = {}
                 success.confirmation = true;
@@ -24,6 +26,7 @@ module.exports = {
         
         return new Promise((resolve, reject) => {
             Team.findById(params.id)
+                .populate('users')
                 .then(teams => {
                     resolve(teams);
                 })
@@ -68,7 +71,6 @@ module.exports = {
     resetChallenges: (id) => {
 
         return new Promise((resolve, reject) => {
-console.log(id);
 
             Team.findById(id)
                 .then(foundTeam => {
@@ -78,7 +80,6 @@ console.log(id);
                     currentTeam.challenge2 = game.generateChallenge();
                     currentTeam.challenge3 = game.generateChallenge();
                     currentTeam.challenge = [false, false, false]
-console.log(currentTeam);
 
                     Team.findByIdAndUpdate(foundTeam._id, currentTeam)
                         .then(team => {
@@ -133,10 +134,12 @@ console.log(currentTeam);
 
         return new Promise((resolve, reject) => {
             Team.findById(body.id)
+                .populate('users')
                 .then(foundTeam => {
                 
                     let currentTeam = body
                     Team.findByIdAndUpdate(body.id, currentTeam)
+                        .populate('users')
                         .then(team => {
                             resolve(team)
                         })
@@ -156,6 +159,7 @@ console.log(currentTeam);
 
         return new Promise((resolve, reject) => {
             Team.findById(params.id)
+                .populate('users')
                 .then(foundTeam => {
 
                     let currentTeam = {}
@@ -164,6 +168,7 @@ console.log(currentTeam);
                     currentTeam.users = currentUsers
 
                     Team.findByIdAndUpdate(params.id, currentTeam)
+                        .populate('users')
                         .then(team => {
                             resolve(team)
                         })
@@ -176,13 +181,14 @@ console.log(currentTeam);
                 .catch(err => {
                     reject(err);
                 })
-
+            
         })
     },
     removeUser: (params) => {
 
         return new Promise((resolve, reject) => {
             Team.findById(params.id)
+                .populate('users')
                 .then(foundTeam => {
 
                     let currentTeam = {}
@@ -192,6 +198,7 @@ console.log(currentTeam);
                     currentTeam.users = currentUsers
 
                     Team.findByIdAndUpdate(params.id, currentTeam)
+                        .populate('users')
                         .then(team => {
                             resolve(team)
                         })

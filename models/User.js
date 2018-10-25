@@ -6,9 +6,12 @@ var UserSchema = new mongoose.Schema({
     email: {type: String, default: ''},
     password: {type: String, default: ''},
     userScore: {type: Number, default: 0},
-    team: {type: String, default: ''},
+    team: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Team'
+    },
     challenge: {type: Array, default: [false,false,false]},  // challenge tracker, set to true when complete
     currentPostion: {type: Object, default: {name: 'Code Immersives', position: [40.7602231, -73.9908527] }}
 });
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

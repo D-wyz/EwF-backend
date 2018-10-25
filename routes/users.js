@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var userController = require('../controllers/userController')
 var passport = require('passport');
-
 var authMiddleware = require('../utils/authMiddleware');
-var userController =require('../controllers/userController')
 
 const validateRegisterInput = require('../validation/register');
 const validateLoginInput = require('../validation/login');
@@ -47,8 +46,8 @@ router.get('/current',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     res.json({
-      id: req.user.id,
-      name: req.user.name,
+      id: req.user._id,
+      name: req.user.username,
       email: req.user.email
     });
   }
@@ -87,13 +86,13 @@ router.put('/updateUser', function (req, res, next) {
     .then(user => {
       res.json({
         confirmation: 'success',
-        user
+        payload: user
       })
     })
     .catch(err => {
       res.json({
         confirmation: 'failure',
-        err
+        payload: err
       })
     })
 
