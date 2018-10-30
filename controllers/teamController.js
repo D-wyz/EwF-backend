@@ -35,40 +35,19 @@ module.exports = {
         })
     });
   },
-
   create: (params) => {
 
     return new Promise((resolve, reject) => {
       Team.create(params)
         .then(team => {
-          console.log(team);
-
-          const payload = {
-            teamName: team.teamName,
-            id: team._id,
-          }
-          console.log(payload);
-
-          jwt.sign(payload, process.env.SECRET_KEY, {
-            expiresIn: 3600
-          }, (err, token) => {
-
-            if (err) {
-              reject(err);
-            } else {
-              let success = {};
-              success.confirmation = true;
-              success.token = `Bearer ${token}`;
-              resolve(success);
-            }
-          });
+          resolve(team);
         })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  },
-  
+         .catch(err => {
+        reject(err);
+      });
+  });
+},
+
   updateTeam: (body) => {
 
     return new Promise((resolve, reject) => {
@@ -94,63 +73,4 @@ module.exports = {
 
     })
   }
-  // addUser: (params) => {
-
-  //   return new Promise((resolve, reject) => {
-  //     Team.findById(params.id)
-  //       .populate('users')
-  //       .then(foundTeam => {
-
-  //         let currentTeam = {}
-  //         currentUsers = foundTeam.users
-  //         currentUsers.push(params.user)
-  //         currentTeam.users = currentUsers
-
-  //         Team.findByIdAndUpdate(params.id, currentTeam)
-  //           .populate('users')
-  //           .then(team => {
-  //             resolve(team)
-  //           })
-  //           .catch(err => {
-  //             console.log(err)
-  //             reject(id)
-  //           })
-
-  //       })
-  //       .catch(err => {
-  //         reject(err);
-  //       })
-
-  //   })
-  // },
-  // removeUser: (params) => {
-
-  //   return new Promise((resolve, reject) => {
-  //     Team.findById(params.id)
-  //       .populate('users')
-  //       .then(foundTeam => {
-
-  //         let currentTeam = {}
-  //         currentUsers = foundTeam.users
-  //         let indx = currentUsers.indexOf(params.user)
-  //         currentUsers.splice(indx)
-  //         currentTeam.users = currentUsers
-
-  //         Team.findByIdAndUpdate(params.id, currentTeam)
-  //           .populate('users')
-  //           .then(team => {
-  //             resolve(team)
-  //           })
-  //           .catch(err => {
-  //             console.log(err)
-  //             reject(id)
-  //           })
-
-  //       })
-  //       .catch(err => {
-  //         reject(err);
-  //       })
-
-  //   })
-  // }
 }
