@@ -52,48 +52,42 @@ router.get(
   }
 );
 
+router.get('/getuser', function (req, res, next) {
+
+  userController
+    .findUser(req.query)
+    .then(user => {
+      res.json({
+        confirmation: 'success',
+        payload: user
+      })
+    })
+    .catch(err => {
+      res.json({
+        confirmation: 'failure',
+        payload: err
+      })
+    })
+
+});
+
+router.put('/updateUser', function (req, res, next) {
+
+  userController
+    .updateUser(req.body)
+    .then(user => {
+      res.json({
+        confirmation: 'success',
+        payload: user
+      })
+    })
+    .catch(err => {
+      res.json({
+        confirmation: 'failure',
+        payload: err
+      })
+    })
+
+});
+
 module.exports = router;
-
-// SPA version
-// router.post('/createuserorlogin', authMiddleware.checkSignUp, authMiddleware.checkSignIn);
-
-// router.get('/getuser', function (req, res, next) {
-
-//   userController
-//     .findUser(req.query)
-//     .then(user => {
-//       res.json({
-//         confirmation: 'success',
-//         payload: user
-//       })
-//     })
-//     .catch(err => {
-//       res.json({
-//         confirmation: 'failure',
-//         payload: err
-//       })
-//     })
-
-// });
-
-// router.put('/updateUser', function (req, res, next) {
-
-//   userController
-//     .updateUser(req.body)
-//     .then(user => {
-//       res.json({
-//         confirmation: 'success',
-//         payload: user
-//       })
-//     })
-//     .catch(err => {
-//       res.json({
-//         confirmation: 'failure',
-//         payload: err
-//       })
-//     })
-
-// });
-
-// router.get('/current-user', passport.authenticate('jwt', {session: false}), authMiddleware.successUser);
-// module.exports = router;
