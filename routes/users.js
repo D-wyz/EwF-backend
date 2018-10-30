@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userController = require('../controllers/userController')
+var userController = require('../controllers/userController');
 var passport = require('passport');
 var authMiddleware = require('../utils/authMiddleware');
 
@@ -13,20 +13,18 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
-
-
   const { errors, isValid } = validateRegisterInput(req.body);
-  console.log(errors)
+  console.log(errors);
   // Check Validation
   if (!isValid) {
     return res.status(400).json(errors);
     //return res.status(400).json(errors);
   }
 
-  userController.register(req.body)
+  userController
+    .register(req.body)
     .then(user => res.json(user))
     .catch(err => res.json(err));
-
 });
 
 router.post('/login', function(req, res) {
@@ -36,13 +34,14 @@ router.post('/login', function(req, res) {
     return res.status(400).json(errors);
   }
 
-  userController.login(req.body)
+  userController
+    .login(req.body)
     .then(user => res.json(user))
     .catch(err => res.json(err));
-
 });
 
-router.get('/current',
+router.get(
+  '/current',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     res.json({
@@ -53,50 +52,48 @@ router.get('/current',
   }
 );
 
-
 module.exports = router;
-
 
 // SPA version
-router.post('/createuserorlogin', authMiddleware.checkSignUp, authMiddleware.checkSignIn);
+// router.post('/createuserorlogin', authMiddleware.checkSignUp, authMiddleware.checkSignIn);
 
-router.get('/getuser', function (req, res, next) {
-  
-  userController
-    .findUser(req.query)
-    .then(user => {
-      res.json({
-        confirmation: 'success',
-        payload: user
-      })
-    })
-    .catch(err => {
-      res.json({
-        confirmation: 'failure',
-        payload: err
-      })
-    })
+// router.get('/getuser', function (req, res, next) {
 
-});
+//   userController
+//     .findUser(req.query)
+//     .then(user => {
+//       res.json({
+//         confirmation: 'success',
+//         payload: user
+//       })
+//     })
+//     .catch(err => {
+//       res.json({
+//         confirmation: 'failure',
+//         payload: err
+//       })
+//     })
 
-router.put('/updateUser', function (req, res, next) {
+// });
 
-  userController
-    .updateUser(req.body)
-    .then(user => {
-      res.json({
-        confirmation: 'success',
-        payload: user
-      })
-    })
-    .catch(err => {
-      res.json({
-        confirmation: 'failure',
-        payload: err
-      })
-    })
+// router.put('/updateUser', function (req, res, next) {
 
-});
+//   userController
+//     .updateUser(req.body)
+//     .then(user => {
+//       res.json({
+//         confirmation: 'success',
+//         payload: user
+//       })
+//     })
+//     .catch(err => {
+//       res.json({
+//         confirmation: 'failure',
+//         payload: err
+//       })
+//     })
 
-router.get('/current-user', passport.authenticate('jwt', {session: false}), authMiddleware.successUser);
-module.exports = router;
+// });
+
+// router.get('/current-user', passport.authenticate('jwt', {session: false}), authMiddleware.successUser);
+// module.exports = router;

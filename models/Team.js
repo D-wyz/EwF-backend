@@ -7,10 +7,9 @@ var TeamSchema = new mongoose.Schema({
       ref: 'User'
     }],
     teamScore: {type: Number, default: 0},
-    challenge1: {type: Object, default: {name: '', postion: []}},
-    challenge2: {type: Object, default: {name: '', postion: []}},
-    challenge3: {type: Object, default: {name: '', postion: []}},
-    challenge: {type: Array, default: [false,false,false]}
+    challenge1: {type: Object, default: {complete: false, name: '', postion: []}},
+    challenge2: {type: Object, default: {complete: false, name: '', postion: []}},
+    challenge3: {type: Object, default: {complete: false, name: '', postion: []}},
 });
 
 module.exports = mongoose.model('Team', TeamSchema);
