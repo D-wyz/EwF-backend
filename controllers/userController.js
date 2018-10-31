@@ -39,24 +39,35 @@ module.exports = {
   login: function(params) {
     const email = params.email;
     const password = params.password;
+    var payload = {};
 
     return new Promise(function(resolve, reject) {
-      User.findOne({ email }).then(user => {
+      User.findOne({ email })
+      .populate('team')
+      .then(user => {
+        Team.findById(user.team)
+          .populate('users')
+          .then(teams => {
+            
         if (!user) {
           let errors = {};
           errors.email = 'User not found';
           errors.status = 400;
           reject(errors);
         }
-
+        console.log('---1=--', payload);
+        
         bcrypt.compare(password, user.password).then(isMatch => {
+  
           if (isMatch) {
-            const payload = {
+             payload = {
               id: user._id,
               email: user.email,
-              username: user.username
+              username: user.username,
+              userData: user,
+              teamData: teams
             };
-            console.log(payload);
+            console.log('-----2-----',payload);
             console.log(process.env.SECRET_KEY);
             jwt.sign(
               payload,
@@ -88,8 +99,9 @@ module.exports = {
           }
         });
       });
-    });
-  },
+    })
+  })
+},
 
   findUser: (params) => {
 

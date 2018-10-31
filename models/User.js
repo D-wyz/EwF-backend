@@ -8,7 +8,8 @@ var UserSchema = new mongoose.Schema({
   userScore: { type: Number, default: 0 },
   team: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Team'
+    ref: 'Team',
+    default: null
   },
   challenge: { type: Array, default: [false, false, false] },  // challenge tracker, set to true when complete
   currentPostion: { type: Object, default: { name: 'Code Immersives', position: [40.7602231, -73.9908527] } }
