@@ -49,47 +49,42 @@ module.exports = {
           .populate('users')
           .then(teams => {
             
-        if (!user) {
-          let errors = {};
-          errors.email = 'User not found';
-          errors.status = 400;
-          reject(errors);
-        }
-        console.log('---1=--', payload);
-        
-        bcrypt.compare(password, user.password).then(isMatch => {
-  
-          if (isMatch) {
-             payload = {
-              id: user._id,
-              email: user.email,
-              username: user.username,
-              userData: user,
-              teamData: teams
-            };
-            console.log('-----2-----',payload);
-            console.log(process.env.SECRET_KEY);
-            jwt.sign(
-              payload,
-              process.env.SECRET_KEY,
-              {
-                expiresIn: 3600
-              },
-              (err, token) => {
-                if (err) {
-                  console.log(err);
-                  reject(err);
-                }
-                console.log(token);
-                // res.json({
-                //     success: true,
-                //     token: 'Bearer ' + token
-                // });
-                let success = {};
-                success.confirmation = true;
-                success.token = 'Bearer ' + token;
-                resolve(success);
-              }
+            if (!user) {
+              let errors = {};
+              errors.email = 'User not found';
+              errors.status = 400;
+              reject(errors);
+            }
+            
+            bcrypt.compare(password, user.password).then(isMatch => {
+      
+              if (isMatch) {
+                payload = {
+                  id: user._id,
+                  email: user.email,
+                  username: user.username,
+                  userData: user,
+                  teamData: teams
+                };
+               // console.log('-----2-----',payload);
+               // console.log(process.env.SECRET_KEY);
+                jwt.sign(
+                  payload,
+                  process.env.SECRET_KEY,
+                  {
+                    expiresIn: 3600
+                  },
+                  (err, token) => {
+                    if (err) {
+                      console.log(err);
+                      reject(err);
+                    }
+
+                    let success = {};
+                    success.confirmation = true;
+                    success.token = 'Bearer ' + token;
+                    resolve(success);
+                  }
             );
           } else {
             let errors = {};
