@@ -54,8 +54,11 @@ module.exports = {
       Team.findById(body.id)
         .populate('users')
         .then(foundTeam => {
-
-          let currentTeam = body
+          let currentTeam = foundTeam
+          //console.log('----1----', currentTeam);
+          
+          currentTeam = body
+          //console.log('----2----', currentTeam);
           Team.findByIdAndUpdate(body.id, currentTeam)
             .populate('users')
             .then(team => {
