@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
   username: { type: String, default: '' },
-  userPicture: { type: String, default: '../public/images/anon.jpg' },
+  userPicture: { type: String, default: '/anon.jpg' },
   email: { type: String, default: '' },
   password: { type: String, default: '' },
   userScore: { type: Number, default: 0 },

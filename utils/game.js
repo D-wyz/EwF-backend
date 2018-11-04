@@ -10,7 +10,7 @@ module.exports = {
       { name: 'Central Park', postion: [40.785091, -73.968285], picture: '/central-park.jpg' },
       { name: 'One World Trade Center', postion: [40.7127, -74.0134], picture: '/OneWorldTradeCenter.jpg' },
       { name: 'Brooklyn Bridge', postion: [40.7061, -73.9969], picture: '/bk_bridge.jpg' },
-      { name: 'High Line', postion: [40.7480, -74.0048], picture: '/images/high_line.jpg' }
+      { name: 'High Line', postion: [40.7480, -74.0048], picture: '/high_line.jpg' }
     ]
     let challengesArray = [];
 
