@@ -97,7 +97,7 @@ module.exports = {
   },
   findUsers: (req, res, next) => {
     User.find({})
-      .populate("team")
+      //.populate("team")
       .then(users => {
         console.log(users)
         let success = {};
