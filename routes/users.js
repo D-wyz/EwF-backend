@@ -1,18 +1,18 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var userController = require('../controllers/userController');
-var passport = require('passport');
-var authMiddleware = require('../utils/authMiddleware');
+var userController = require("../controllers/userController");
+var passport = require("passport");
+var authMiddleware = require("../utils/authMiddleware");
 
-const validateRegisterInput = require('../validation/register');
-const validateLoginInput = require('../validation/login');
+const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function(req, res, next) {
+  res.render("index", { title: "Express" });
 });
 
-router.post('/register', function(req, res, next) {
+router.post("/register", function(req, res, next) {
   const { errors, isValid } = validateRegisterInput(req.body);
   console.log(errors);
   // Check Validation
@@ -27,7 +27,7 @@ router.post('/register', function(req, res, next) {
     .catch(err => res.json(err));
 });
 
-router.post('/login', function(req, res) {
+router.post("/login", function(req, res) {
   const { errors, isValid } = validateLoginInput(req.body);
   // Check Validation
   if (!isValid) {
@@ -41,8 +41,8 @@ router.post('/login', function(req, res) {
 });
 
 router.get(
-  '/current',
-  passport.authenticate('jwt', { session: false }),
+  "/current",
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({
       id: req.user._id,
@@ -51,43 +51,39 @@ router.get(
     });
   }
 );
-
-router.get('/getuser', function (req, res, next) {
-
+router.get("/getallusers", userController.findUsers);
+router.get("/getuser", function(req, res, next) {
   userController
-    .findUser(req.query)
+    .findUserDB(req.query)
     .then(user => {
       res.json({
-        confirmation: 'success',
+        confirmation: "success",
         payload: user
-      })
+      });
     })
     .catch(err => {
       res.json({
-        confirmation: 'failure',
+        confirmation: "failure",
         payload: err
-      })
-    })
-
+      });
+    });
 });
 
-router.put('/updateUser', function (req, res, next) {
-
+router.put("/updateUser", function(req, res, next) {
   userController
     .updateUser(req.body)
     .then(user => {
       res.json({
-        confirmation: 'success',
+        confirmation: "success",
         payload: user
-      })
+      });
     })
     .catch(err => {
       res.json({
-        confirmation: 'failure',
+        confirmation: "failure",
         payload: err
-      })
-    })
-
+      });
+    });
 });
 
 module.exports = router;
