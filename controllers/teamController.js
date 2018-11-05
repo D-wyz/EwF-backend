@@ -57,9 +57,27 @@ module.exports = {
           let currentTeam = foundTeam
           console.log('----1----', currentTeam);
           
-          currentTeam = body
+          for (const key in body) {
+            // console.log("KEY: ", key);
+            // console.log('currentTeam[key]: ', currentTeam[key]); 
+            
+            // console.log('body[key]: ', body[key]);
+
+            // console.log('currentTeam.challenge1.complete: ', currentTeam.challenge1.complete);
+            // console.log('---------------');
+            
+            if(key.includes('.')) {
+              console.log("! . !");
+              let keyArray = key.split('.')
+              // console.log(keyArray);
+              // console.log('currentTeam.keyArray[0].keyArray[1]: ', currentTeam[keyArray[0]][keyArray[1]]);
+              currentTeam[keyArray[0]][keyArray[1]] = body[key]
+            } else {
+              currentTeam[key] = body[key]
+            }
+          }
           console.log('----2----', currentTeam);
-          Team.findByIdAndUpdate(body.id, currentTeam)
+          Team.findByIdAndUpdate(body.id, currentTeam, {new: true, overwrite: false})
             .populate('users')
             .then(team => {
               resolve(team)
